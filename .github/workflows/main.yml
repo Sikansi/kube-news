@@ -23,7 +23,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       
-      - name: Docker Login
+      - name: Autenticando o usuário no Docker
         uses: docker/login-action@v2.0.0
         with:
           # Username used to log against the Docker registry
@@ -31,7 +31,7 @@ jobs:
           # Password or personal access token used to log against the Docker registry
           password: ${{secrets.DOCKERHUB_PWD}}
 
-      - name: Build and push Docker images
+      - name: Construindo a imagem e enviando para o Docker Hub
         uses: docker/build-push-action@v3.1.1
         with:
           file: ./src/Dockerfile
@@ -47,13 +47,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      - name: Kubernetes Set Context
+      - name: Definindo o Kube config
         uses: Azure/k8s-set-context@v3.0
         with:
           method: kubeconfig
           kubeconfig: ${{secrets.K8S_CONFIG}}
           
-      - name: Deploy to Kubernetes cluster
+      - name: Efetuando o deploy no ambiente de teste
         uses: Azure/k8s-deploy@v4.3
         with:
           images: sikansi/kube-news:${{github.run_number}}
