@@ -36,6 +36,7 @@ jobs:
         with:
           file: ./src/Dockerfile
           context: ./src
+          push: true
           tags: | 
             sikansi/kube-news:latest
             sikansi/kube-news:${{github.run_number}}
